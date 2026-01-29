@@ -22,15 +22,13 @@
             <!-- Auth Buttons untuk Desktop -->
             <div class="flex items-center space-x-4 ml-4">
                 <?php if(session()->get('member_logged_in')): ?>
-                <a href="<?= base_url('member/dashboard') ?>"
-                    class="text-gray-300 hover:text-primary transition-colors font-medium">
-                    <i class="fas fa-user mr-1"></i> Dashboard
-                </a>
+                <!-- Tombol Logout -->
                 <a href="<?= base_url('auth/logout') ?>"
-                    class="bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded-lg transition-colors">
-                    Logout
+                    class="bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary-dark text-white font-semibold py-2 px-6 rounded-lg transition-colors">
+                    <i class="fas fa-sign-out-alt mr-1"></i> Logout
                 </a>
                 <?php else: ?>
+                <!-- Tombol Login dan Daftar -->
                 <a href="<?= base_url('auth/login') ?>"
                     class="text-gray-300 hover:text-primary transition-colors font-medium">
                     <i class="fas fa-sign-in-alt mr-1"></i> Login
@@ -71,15 +69,13 @@
             <!-- Auth Buttons untuk Mobile -->
             <div class="pt-4 border-t border-gray-800 space-y-3">
                 <?php if(session()->get('member_logged_in')): ?>
-                <a href="<?= base_url('member/dashboard') ?>"
-                    class="block text-center bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
-                    <i class="fas fa-user mr-2"></i> Dashboard
-                </a>
+                <!-- Tombol Logout untuk mobile -->
                 <a href="<?= base_url('auth/logout') ?>"
-                    class="block text-center bg-primary hover:bg-primary-dark text-white font-semibold py-3 px-4 rounded-lg transition-colors">
+                    class="block text-center bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary-dark text-white font-semibold py-3 px-4 rounded-lg transition-colors">
                     <i class="fas fa-sign-out-alt mr-2"></i> Logout
                 </a>
                 <?php else: ?>
+                <!-- Tombol Login dan Daftar untuk mobile -->
                 <a href="<?= base_url('auth/login') ?>"
                     class="block text-center bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
                     <i class="fas fa-sign-in-alt mr-2"></i> Login
@@ -95,74 +91,83 @@
 </nav>
 
 <script>
-// Mobile Menu Toggle
-document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-    const mobileMenu = document.getElementById('mobileMenu');
-    mobileMenu.classList.toggle('hidden');
-
-    // Ganti icon menu
-    const icon = this.querySelector('i');
-    if (icon.classList.contains('fa-bars')) {
-        icon.classList.remove('fa-bars');
-        icon.classList.add('fa-times');
-    } else {
-        icon.classList.remove('fa-times');
-        icon.classList.add('fa-bars');
-    }
-});
-
-// Close mobile menu when clicking outside
-document.addEventListener('click', function(event) {
-    const mobileMenu = document.getElementById('mobileMenu');
+// Pastikan DOM sudah sepenuhnya dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile Menu Toggle
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
 
-    if (!mobileMenu.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
-        mobileMenu.classList.add('hidden');
-        const icon = mobileMenuBtn.querySelector('i');
-        if (icon.classList.contains('fa-times')) {
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
-        }
-    }
-});
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', function(e) {
+            e.stopPropagation(); // Mencegah event bubbling
 
-// Close mobile menu when clicking a link
-document.querySelectorAll('#mobileMenu a').forEach(link => {
-    link.addEventListener('click', function() {
-        document.getElementById('mobileMenu').classList.add('hidden');
-        const icon = document.getElementById('mobileMenuBtn').querySelector('i');
-        if (icon.classList.contains('fa-times')) {
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
-        }
-    });
-});
+            mobileMenu.classList.toggle('hidden');
 
-// Smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            // Close mobile menu if open
-            const mobileMenu = document.getElementById('mobileMenu');
-            const menuBtnIcon = document.querySelector('#mobileMenuBtn i');
-            if (!mobileMenu.classList.contains('hidden')) {
-                mobileMenu.classList.add('hidden');
-                menuBtnIcon.classList.remove('fa-times');
-                menuBtnIcon.classList.add('fa-bars');
+            // Ganti icon menu
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
             }
+        });
 
-            // Smooth scroll
-            window.scrollTo({
-                top: targetElement.offsetTop - 80,
-                behavior: 'smooth'
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!mobileMenu.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
+                const icon = mobileMenuBtn.querySelector('i');
+                if (icon.classList.contains('fa-times')) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.add('hidden');
+                const icon = mobileMenuBtn.querySelector('i');
+                if (icon.classList.contains('fa-times')) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
             });
-        }
+        });
+    }
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                // Close mobile menu if open
+                const mobileMenu = document.getElementById('mobileMenu');
+                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                if (mobileMenu && mobileMenuBtn && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    const menuBtnIcon = mobileMenuBtn.querySelector('i');
+                    if (menuBtnIcon.classList.contains('fa-times')) {
+                        menuBtnIcon.classList.remove('fa-times');
+                        menuBtnIcon.classList.add('fa-bars');
+                    }
+                }
+
+                // Smooth scroll
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
     });
 });
 </script>

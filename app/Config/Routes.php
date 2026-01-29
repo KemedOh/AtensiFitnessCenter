@@ -40,23 +40,31 @@ $routes->group('member', ['filter' => 'member'], function($routes) {
 
 // Admin Routes (sesuai controller yang sudah ada)
 $routes->group('admin', ['filter' => 'admin'], function($routes) {
+    // Dashboard
     $routes->get('dashboard', 'AdminController::dashboard');
+    
+    // Member Management
     $routes->get('members', 'AdminController::members');
+    $routes->get('members/create', 'AdminController::create');
+    $routes->post('members/store', 'AdminController::store');
     $routes->get('members/view/(:num)', 'AdminController::viewMember/$1');
+    $routes->get('members/edit/(:num)', 'AdminController::edit/$1');
+    $routes->post('members/update/(:num)', 'AdminController::update/$1'); // Ganti PUT menjadi POST
     $routes->post('members/update-status/(:num)', 'AdminController::updateMemberStatus/$1');
-    $routes->get('manage-admins', 'AdminController::manageAdmins');
-    $routes->post('manage-admins/create', 'AdminController::createAdmin');
-    $routes->post('manage-admins/update-status/(:num)', 'AdminController::updateAdminStatus/$1');
-    $routes->get('manage-admins/delete/(:num)', 'AdminController::deleteAdmin/$1');
+    $routes->post('members/delete/(:num)', 'AdminController::deleteMember/$1'); // Ganti nama method
+    
+    // Admin Management (Superadmin only)
+    $routes->get('admins', 'AdminController::admins');
+    $routes->get('admins/create', 'AdminController::createAdminForm');
+    $routes->post('admins/store', 'AdminController::storeAdmin'); // Ganti route
+    $routes->post('admins/update-status/(:num)', 'AdminController::updateAdminStatus/$1');
+    $routes->post('admins/delete/(:num)', 'AdminController::deleteAdmin/$1');
+    
+    // Reports & Settings
     $routes->get('reports', 'AdminController::reports');
     $routes->get('settings', 'AdminController::settings');
     $routes->get('profile', 'AdminController::profile');
     $routes->post('profile/update', 'AdminController::updateProfile');
-        $routes->get('members/create', 'AdminController::create');
-    $routes->post('members/store', 'AdminController::store');
-    $routes->get('members/edit/(:num)', 'AdminController::edit/$1');
-    $routes->put('members/update/(:num)', 'AdminController::update/$1');
-    $routes->post('members/delete/(:num)', 'AdminController::delete/$1');
 });
 
 // Auth Routes

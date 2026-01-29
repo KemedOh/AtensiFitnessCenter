@@ -157,7 +157,7 @@
                     <i class="fas fa-users mr-2"></i> Member
                 </a>
                 <?php if(session()->get('is_superadmin')): ?>
-                <a href="<?= base_url('/admin/manage-admins') ?>"
+                <a href="<?= base_url('/admin/admins') ?>"
                     class="flex items-center px-3 py-2 text-sm font-medium <?= strpos(current_url(), '/admin/manage-admins') !== false ? 'text-primary border-b-2 border-primary' : 'text-gray-300 hover:text-white' ?>">
                     <i class="fas fa-user-cog mr-2"></i> Admin
                 </a>
